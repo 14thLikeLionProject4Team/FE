@@ -1,0 +1,31 @@
+.wrap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  padding: 24px;
+  text-align: center;
+}
+
+.title {
+  font-size: 20px;
+  color: var(--text-strong);
+}
+
+.desc {
+  font-size: 13px;
+  color: var(--text-subtle);
+}
+
+.back {
+  margin-top: 8px;
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}

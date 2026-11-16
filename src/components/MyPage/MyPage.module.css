@@ -1,0 +1,514 @@
+/* 마이페이지 5개 화면이 공유하는 조각들 */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: calc(var(--screen-top) - 6px) 20px 20px;
+  background: var(--page-bg);
+}
+
+.pageTitle {
+  padding: 6px 0;
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+/* 카드 */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.cardTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardTitle {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.cardNote {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.cardHint {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+/* 프로필 */
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-pill);
+  object-fit: cover;
+}
+
+.profileName {
+  font-size: 18px;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.profileMeta {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.statusChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-soft);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+.grayChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--neutral-soft);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.violetChip {
+  composes: grayChip;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.solidChip {
+  composes: grayChip;
+  background: var(--primary-deep);
+  color: #fff;
+}
+
+/* 성년 전환 배너 */
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--primary-soft);
+}
+
+.bannerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.bannerText {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+/* 성년 전환 카드 (M4) */
+.transitionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: linear-gradient(135.91deg, #f3efff 0%, #ebe5ff 71.429%);
+}
+
+.transitionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.transitionTitle {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.transitionDesc {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.counterBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 14px 0;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.counterLabel {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+.counterValue {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+/* 부모 마이 — 헤더 우측 자녀 선택 칩 */
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.headerTitle {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.childChip {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+/* 설정 행 — 라벨 왼쪽 고정, 값이 오른쪽에서 늘어남 */
+.settingRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 0;
+  text-align: left;
+}
+
+.settingLabel {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.settingValue {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: right;
+  color: var(--text-strong);
+}
+
+.settingRowMuted {
+  composes: settingRow;
+}
+
+.settingRowMuted .settingLabel,
+.settingRowMuted .settingValue {
+  color: var(--text-subtle);
+}
+
+/* 약속 기록 타임라인 */
+.timelineItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.timelineDot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 13px;
+}
+
+.timelineDate {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+.timelineTitle {
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.timelineNote {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.cardMetaRight {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+/* 통계 행 */
+.statRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.statLabel {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.statValue {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.statValueAccent {
+  composes: statValue;
+  color: var(--primary);
+}
+
+.divider {
+  height: 1px;
+  background: var(--card-border);
+}
+
+/* 설정 리스트 */
+.listCard {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 16px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.listRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 0;
+  text-align: left;
+}
+
+.listLabel {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.listValue {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+.listArrow {
+  flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1.45;
+  color: var(--text-arrow);
+}
+
+/* 요건 체크 */
+.requirement {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkCircle {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid #d7bcff;
+  border-radius: var(--radius-pill);
+  background: #fff;
+}
+
+.checkCircleDone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  font-size: 12px;
+  color: #fff;
+}
+
+.requirementBody {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.requirementTitle {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.requirementNote {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+.requirementValue {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+/* 진행 막대 */
+.progressTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--primary-soft);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--primary-deep);
+}
+
+/* 버튼 */
+.disabledButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 13px 0;
+  border-radius: 12px;
+  background: var(--neutral-soft);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+.primaryButton {
+  composes: disabledButton;
+  background: var(--primary-deep);
+  color: #fff;
+}
+
+.link {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: left;
+  white-space: pre;
+  color: var(--primary);
+}

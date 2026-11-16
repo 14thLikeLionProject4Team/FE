@@ -1,0 +1,421 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: var(--app-bg);
+}
+
+/* ── 날짜 · 프라이버시 배지 ─────────────────────────── */
+.dateBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.dateGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.date {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.18px;
+  color: var(--app-ink);
+}
+
+.dateDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip-review-text);
+}
+
+.privacyBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--app-tint-strong);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-ink-muted);
+}
+
+/* ── 정산 카드 (여유 상태) ──────────────────────────── */
+.settlement {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  overflow: hidden;
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: 0 4px 24px -2px rgba(91, 70, 246, 0.08);
+}
+
+/* 우상단 장식 그라데이션 */
+.settlement::before {
+  content: '';
+  position: absolute;
+  top: -32px;
+  right: -32px;
+  width: 128px;
+  height: 128px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    135deg,
+    rgba(228, 223, 255, 0.4) 0%,
+    rgba(228, 223, 255, 0) 100%
+  );
+}
+
+.settlementRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.caption {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--app-ink-muted);
+}
+
+.dueChip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: #efebff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-accent);
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.amountRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.amount {
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -0.8px;
+  color: var(--app-ink);
+}
+
+.amountUnit {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: -0.18px;
+  color: var(--app-ink);
+}
+
+.amountNote {
+  padding-left: 4px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}
+
+.compare {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.compareLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}
+
+.compareLeft strong {
+  font-weight: 500;
+  color: var(--app-ink);
+}
+
+.compareDot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--app-accent);
+}
+
+.surplus {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-accent);
+}
+
+/* 게이지 */
+.gauge {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.gaugeTrack {
+  display: flex;
+  align-items: center;
+  height: 12px;
+  padding: 2px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--app-tint-strong);
+}
+
+.gaugeFill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--app-accent) 0%, #8a4cfc 100%);
+}
+
+.gaugeLegend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-ink-muted);
+}
+
+.reassure {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-ink-muted);
+}
+
+.reassureLeft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+/* ── 점검할 것 없음 카드 ────────────────────────────── */
+.statusCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 32px;
+  background: #fff;
+  filter: drop-shadow(0 2px 8px rgba(91, 70, 246, 0.05));
+}
+
+.statusIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip-review);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+}
+
+.statusTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.18px;
+  color: var(--app-ink);
+}
+
+.statusDesc {
+  margin-top: 2.75px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.75px;
+  letter-spacing: -0.07px;
+  color: var(--app-ink-muted);
+}
+
+/* ── 지난달 브리핑 ──────────────────────────────────── */
+.briefing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 32px;
+  background: var(--app-tint);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+}
+
+.briefingLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.briefingIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: #e3dfff;
+}
+
+.briefingTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.18px;
+  color: var(--app-ink);
+}
+
+.briefingDesc {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}
+
+.briefingToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: #e3dfff;
+}
+
+/* ── 신용 성장 기록 ─────────────────────────────────── */
+.growth {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.growthLabel {
+  padding: 0 2px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--app-ink-muted);
+}
+
+.growthChips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.growthChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--app-tint-strong);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--app-ink);
+}
+
+.growthDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip-review-text);
+}
+
+/* ── 보너스 팁 ──────────────────────────────────────── */
+.bonus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 32px;
+  background: linear-gradient(90deg, var(--app-tint) 0%, var(--app-tint-strong) 100%);
+}
+
+.bonusLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bonusIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 30.63px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--app-accent-bar);
+}
+
+.bonusTitle {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--app-ink);
+}
+
+.bonusDesc {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}

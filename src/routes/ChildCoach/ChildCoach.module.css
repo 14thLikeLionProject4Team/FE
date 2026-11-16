@@ -1,0 +1,363 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px 16px 16px;
+  background: var(--app-bg);
+}
+
+/* ── 날짜 구분 알약 ─────────────────────────────────── */
+.dateDivider {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.datePill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  border: 1px solid rgba(233, 213, 255, 0.5);
+  border-radius: var(--radius-pill);
+  background: rgba(243, 232, 255, 0.7);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16.5px;
+  color: #7e22ce;
+}
+
+.datePillDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--app-accent-bar);
+}
+
+/* ── 코치 메시지 ────────────────────────────────────── */
+.coachRow {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  max-width: 364.72px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  margin-top: 2px;
+  padding: 5px;
+  border: 1px solid #e9d5ff;
+  border-radius: var(--radius-pill);
+  background: #f3e8ff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  overflow: hidden;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 95.24%;
+  object-fit: contain;
+}
+
+.bubbleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.sender {
+  padding-left: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #64748b;
+}
+
+.coachBubble {
+  padding: 17px 18.19px 17px 17px;
+  border: 1px solid rgba(243, 232, 255, 0.8);
+  border-radius: 2px 16px 16px 16px;
+  background: #fff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 21.94px;
+  color: #1e293b;
+}
+
+.accent {
+  font-weight: 500;
+  color: var(--app-accent-bar);
+}
+
+.danger {
+  font-weight: 500;
+  color: #f43f5e;
+}
+
+.strong {
+  font-weight: 500;
+}
+
+.time {
+  padding-left: 4px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 15px;
+  color: #94a3b8;
+}
+
+/* ── 자녀 메시지 ────────────────────────────────────── */
+.childRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.childGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  max-width: 318.16px;
+}
+
+.childBubble {
+  padding: 14px 18.03px 14px 14px;
+  border-radius: 16px 2px 16px 16px;
+  background: var(--primary-deep);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 21.94px;
+  color: #fff;
+}
+
+.timeRight {
+  composes: time;
+  padding-left: 0;
+  padding-right: 4px;
+}
+
+/* ── 해결책 카드가 들어간 큰 버블 ───────────────────── */
+.solutionBubble {
+  composes: coachBubble;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 15.965px 17px 17.01px;
+}
+
+.solutionCard {
+  padding: 12px;
+  border: 1px solid rgba(233, 213, 255, 0.7);
+  border-radius: 12px;
+  background: rgba(250, 245, 255, 0.7);
+}
+
+.solutionHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.solutionTitle {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #0f172a;
+}
+
+.solutionBadge {
+  flex-shrink: 0;
+  padding: 1.5px 8px 1.75px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16.25px;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.solutionDesc {
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.5px;
+  color: #475569;
+}
+
+.solutionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--primary-deep);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #fff;
+}
+
+.solutionCardAlt {
+  display: flex;
+  flex-direction: column;
+  gap: 5.25px;
+  padding: 13px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+/* 부모님 안심 브리핑 */
+.briefingCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 13px;
+  border: 1px solid rgba(167, 243, 208, 0.7);
+  border-radius: 12px;
+  background: rgba(236, 253, 245, 0.8);
+}
+
+.briefingTitle {
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 18.69px;
+  color: #065f46;
+}
+
+.briefingBody {
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 18.69px;
+  color: #334155;
+}
+
+.briefingBody strong {
+  font-weight: 700;
+}
+
+/* ── 빠른 답변 ──────────────────────────────────────── */
+.quickReplies {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.quickLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16.5px;
+  color: #64748b;
+}
+
+.quickScroller {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.quickScroller::-webkit-scrollbar {
+  display: none;
+}
+
+.quickChip {
+  flex-shrink: 0;
+  padding: 7px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  white-space: nowrap;
+  color: #334155;
+}
+
+.quickChipPrimary {
+  composes: quickChip;
+  border-color: #e9d5ff;
+  font-weight: 600;
+  color: var(--app-accent-bar);
+}
+
+/* ── 하단 입력 바 (탭바 위에 고정) ──────────────────── */
+.inputDock {
+  padding: 8px 16px 0;
+}
+
+.inputBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  filter: drop-shadow(0 4px 8px rgba(30, 27, 75, 0.08));
+}
+
+.attachButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+}
+
+.chatInput {
+  flex: 1 0 0;
+  min-width: 0;
+  padding: 4px;
+  border: none;
+  background: none;
+  font-size: 12px;
+  font-family: inherit;
+  color: #1e293b;
+}
+
+.chatInput::placeholder {
+  color: #94a3b8;
+}
+
+.chatInput:focus {
+  outline: none;
+}
+
+.sendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+}

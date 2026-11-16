@@ -1,111 +1,104 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Brand */
+  --primary: #5b3fe0;
+  --primary-deep: #6c38e0;
+  --primary-soft: #f0edff;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Surface */
+  --page-bg: #fcf8ff;
+  --card-bg: #fff;
+  --card-border: #f3f4f6;
+  --neutral-soft: #f0f0f5;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  /* Text */
+  --text-strong: #1a1a1a;
+  --text-muted: #606070;
+  --text-subtle: #8a8a99;
+  --text-arrow: #a1a1aa;
+
+  /* Radius */
+  --radius-card: 20px;
+  --radius-box: 12px;
+  --radius-phone: 40px;
+  --radius-pill: 9999px;
+
+  /* Elevation */
+  --shadow-card:
+    0 4px 18px 0 rgba(91, 63, 224, 0.04), 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+  --shadow-phone:
+    0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+
+  /* 앱 화면 팔레트 — 계정 선택 화면과 색 계열이 달라 분리해 둔다 */
+  --app-bg: #fcf8ff;
+  --app-accent: #4223de;
+  --app-accent-bar: #5b46f6;
+  --app-ink: #181445;
+  --app-ink-muted: #474556;
+  --app-tint: #f6f2ff;
+  --app-tint-strong: #e9e5ff;
+  --app-chip: #e4dfff;
+  --app-chip-review: #eaddff;
+  --app-chip-review-text: #712ae2;
+  --app-danger-bg: #ffdad6;
+  --app-danger-text: #93000a;
+
+  /* 하단 탭바 */
+  --nav-bg: #141126;
+  --nav-active-text: #16132b;
+  --nav-idle-text: #8e8ca3;
+
+  /* Layout — 디자인 기준 뷰포트. 모든 화면이 이 크기로 고정된다 */
+  --phone-width: 390px;
+  --phone-height: 844px;
+
+  /* 둥근 프레임(radius 40px)에 콘텐츠가 붙지 않도록 주는 상단 여백.
+     마이페이지 기준(8px + 6px)에 모든 상단 바를 맞춘다. */
+  --screen-top: 14px;
+
+  font-family:
+    'Pretendard Variable', Pretendard, system-ui, -apple-system,
+    'Apple SD Gothic Neo', sans-serif;
+  line-height: 1.4;
+  color: var(--text-strong);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
+  background: #e9e4f5;
 }
 
+p,
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+h2,
+h3,
+h4 {
   margin: 0;
+  font-weight: 700;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+img {
+  max-width: 100%;
 }

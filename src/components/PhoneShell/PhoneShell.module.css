@@ -1,0 +1,49 @@
+/* 뷰포트에 고정 — 페이지 자체는 스크롤되지 않고 폰이 항상 같은 자리에 머문다 */
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  padding: 16px 0;
+  overflow: hidden;
+}
+
+.phone {
+  position: relative; /* 토스트의 기준 */
+  margin: auto;
+  flex-shrink: 0;
+  width: var(--phone-width);
+  /* 창이 844px보다 낮으면 프레임이 잘리는 대신 줄어든다 — 본문이 더 스크롤될 뿐 */
+  height: min(var(--phone-height), 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-phone);
+  background: var(--page-bg);
+  box-shadow: var(--shadow-phone);
+}
+
+/* 넘치는 본문만 스크롤 — header/footer 는 .phone 에 고정 */
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+/* 폰 폭보다 좁은 화면에서는 전체 화면으로 */
+@media (max-width: 438px) {
+  .stage {
+    padding: 0;
+  }
+
+  .phone {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}

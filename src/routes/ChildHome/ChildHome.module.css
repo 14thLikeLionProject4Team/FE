@@ -1,0 +1,518 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: var(--app-bg);
+}
+
+/* ── 정산 디데이 · 잔액 허브 카드 ───────────────────── */
+.hub {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 21px;
+  border: 1px solid rgba(91, 70, 246, 0.12);
+  border-radius: 32px;
+  background: #fff;
+  box-shadow:
+    0 4px 16px -2px rgba(91, 70, 246, 0.08),
+    0 1px 3px 0 rgba(0, 0, 0, 0.04);
+}
+
+.hubTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.ddayLabelRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.caption {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--app-ink-muted);
+}
+
+.liveChip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-accent);
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--app-accent);
+}
+
+.ddayTitle {
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.48px;
+  color: var(--app-ink);
+}
+
+.ddayRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  width: 73px;
+}
+
+.ddayCount {
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.6px;
+  color: var(--app-accent);
+}
+
+.ddayWhen {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  text-align: right;
+  color: var(--app-ink-muted);
+}
+
+/* 쓴 돈 / 용돈 2분할 */
+.balances {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 16px;
+  background: var(--app-tint);
+}
+
+.balance {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.balanceLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-ink-muted);
+}
+
+.balanceValue {
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: -0.44px;
+  color: var(--app-ink);
+}
+
+.balanceValueAccent {
+  composes: balanceValue;
+  color: var(--app-accent);
+}
+
+/* 한도 게이지 */
+.gauge {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gaugeTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gaugeRatio {
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-accent);
+}
+
+.gaugeDeficit {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-ink);
+}
+
+.gaugeTrack {
+  display: flex;
+  align-items: stretch;
+  height: 12px;
+  padding: 2px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--app-tint-strong);
+}
+
+.gaugeFill {
+  border-radius: var(--radius-pill);
+  background: var(--app-accent-bar);
+}
+
+.gaugeOver {
+  margin-left: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--app-danger-bg);
+}
+
+.gaugeNote {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  text-align: right;
+  color: var(--app-ink-muted);
+}
+
+/* ── 결제일 전 점검 카드 ────────────────────────────── */
+.inspection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 21px;
+  border: 1px solid rgba(91, 70, 246, 0.14);
+  border-radius: 32px;
+  background: rgba(233, 229, 255, 0.6);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.inspectionHead {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.18px;
+  color: var(--app-ink);
+}
+
+.warnChip {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--app-danger-bg);
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-danger-text);
+}
+
+.inspectionBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14.875px 16px 16px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.inspectionLead {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.75px;
+  letter-spacing: -0.07px;
+  color: var(--app-ink);
+}
+
+.inspectionLead strong {
+  font-weight: 500;
+}
+
+.inspectionNote {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 32px;
+  background: var(--app-tint);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}
+
+.inspectionNote strong {
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.primaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 52px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  filter: drop-shadow(0 4px 6px rgba(91, 70, 246, 0.25));
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.18px;
+  color: #fff;
+}
+
+.secondaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12px;
+  color: var(--app-accent);
+}
+
+/* ── 미션으로 용돈 채우기 ───────────────────────────── */
+.missions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.missionsHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.missionsTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.newMission {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-accent);
+}
+
+.callout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: linear-gradient(
+    90deg,
+    var(--app-tint-strong) 0%,
+    var(--app-tint) 50%,
+    #fff 100%
+  );
+}
+
+.calloutIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+}
+
+.calloutTitle {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--app-accent);
+}
+
+.calloutDesc {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}
+
+/* 미션 카드 */
+.questList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quest {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: #fff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+}
+
+.questMain {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.questIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  background: var(--app-tint-strong);
+}
+
+.questInfo {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.questTitle {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.07px;
+  color: var(--app-ink);
+}
+
+.questStatus {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip);
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-accent);
+}
+
+.questStatusReview {
+  composes: questStatus;
+  background: var(--app-chip-review);
+  color: var(--app-chip-review-text);
+}
+
+.questDesc {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}
+
+.questReward {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  padding-left: 4px;
+}
+
+.questAmount {
+  font-size: 22px;
+  line-height: 22px;
+  letter-spacing: -0.44px;
+  text-align: right;
+  color: var(--app-accent);
+}
+
+.questMeta {
+  padding-top: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  text-align: right;
+  color: var(--app-ink-muted);
+}
+
+.questMetaReview {
+  composes: questMeta;
+  font-weight: 500;
+  color: var(--app-chip-review-text);
+}
+
+/* ── 주간 응원 카드 ─────────────────────────────────── */
+.encourage {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 17px;
+  border: 1px solid rgba(91, 70, 246, 0.1);
+  background: var(--app-tint);
+}
+
+.encourageAvatar {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip);
+  object-fit: cover;
+}
+
+.encourageLabel {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}
+
+.encourageQuote {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.07px;
+  color: var(--app-ink);
+}

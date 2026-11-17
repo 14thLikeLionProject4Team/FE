@@ -1,0 +1,356 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: var(--app-bg);
+}
+
+/* ── 상단 액션 바 ───────────────────────────────────── */
+.actionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 36px;
+  padding-top: 4px;
+}
+
+.actionLeft {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: -0.48px;
+  color: var(--app-ink);
+}
+
+.childPicker {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--app-tint-strong);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--app-accent);
+}
+
+.proposeButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: #fff;
+}
+
+/* ── 섹션 공통 ──────────────────────────────────────── */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.18px;
+  color: var(--app-ink);
+}
+
+.countBadge {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip-review);
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: #25005a;
+}
+
+.countBadgeAlt {
+  composes: countBadge;
+  background: var(--app-chip);
+  color: #3912d8;
+}
+
+.sectionNote {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #787588;
+}
+
+.sectionNoteAccent {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-chip-review-text);
+}
+
+/* ── 미션 카드 ──────────────────────────────────────── */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #fff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+}
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cardMain {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 48px;
+  background: var(--app-tint-strong);
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: -0.18px;
+  color: var(--app-ink);
+}
+
+.cardDesc {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--app-ink-muted);
+}
+
+.cardAmount {
+  flex-shrink: 0;
+  padding-left: 8px;
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: -0.44px;
+  white-space: nowrap;
+  color: var(--app-accent);
+}
+
+.statusChip {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip-review);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-chip-review-text);
+}
+
+.statusChipProgress {
+  composes: statusChip;
+  background: var(--app-chip);
+  color: var(--app-accent);
+}
+
+/* 영수증 썸네일 */
+.photos {
+  display: flex;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.photo {
+  position: relative;
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  height: 96px;
+  overflow: hidden;
+  border-radius: 48px;
+  background: var(--app-tint-strong);
+}
+
+.photoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoLabel {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(45, 42, 91, 0.75);
+  backdrop-filter: blur(4px);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: #f3eeff;
+}
+
+/* 카드 하단 바 */
+.cardFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+}
+
+.waitChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--app-tint-strong);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-ink-muted);
+}
+
+.waitDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--app-chip-review-text);
+}
+
+.ghostButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: #efebff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--app-accent);
+}
+
+.solidButton {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-deep);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: #fff;
+}
+
+/* 보조 정보 바 */
+.infoBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 48px;
+  background: var(--app-tint);
+}
+
+.infoBarLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12px;
+  color: var(--app-ink);
+}
+
+.infoBarNote {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: var(--app-ink-muted);
+}
+
+.infoBarAccent {
+  composes: infoBarNote;
+  color: var(--app-accent);
+}
+
+/* 진행 막대 */
+.progressTrack {
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--app-tint-strong);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--app-accent);
+}
+
+.progressFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.progressNote {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.22px;
+  color: #787588;
+}

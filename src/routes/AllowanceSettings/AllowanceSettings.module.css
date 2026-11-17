@@ -1,0 +1,345 @@
+/* ── 상단 바 ────────────────────────────────────────── */
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: var(--screen-top) 20px 12px;
+  background: var(--page-bg);
+}
+
+.back {
+  flex-shrink: 0;
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.title {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+/* ── 본문 ───────────────────────────────────────────── */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0 20px 20px;
+  background: var(--page-bg);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.cardLabel {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+/* AI 제안 배너 */
+.aiBanner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--primary-soft);
+}
+
+.aiBody {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.aiTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aiChip {
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+.aiAmount {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.aiDesc {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.aiLink {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+/* 금액 스테퍼 */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stepperMinus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: var(--neutral-soft);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.stepperPlus {
+  composes: stepperMinus;
+  background: var(--primary-deep);
+  color: #fff;
+}
+
+.amountBox {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  border-radius: 12px;
+  background: #f8f8fc;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+.quickRow {
+  display: flex;
+  gap: 6px;
+}
+
+.quickChip {
+  flex: 1 0 0;
+  min-width: 0;
+  padding: 6px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.deltaRow {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.deltaFrom {
+  flex: 1 0 0;
+  min-width: 0;
+  color: var(--text-subtle);
+}
+
+.deltaValue {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.refBox {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8f8fc;
+}
+
+.refTitle {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+.refDesc {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+/* 적용 카드 */
+.applyCard {
+  composes: card;
+  gap: 6px;
+}
+
+.applyRow {
+  display: flex;
+  align-items: center;
+}
+
+.applyLabel {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+.applyValue {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+.applyNote {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+/* 바꾸는 이유 */
+.reasonCard {
+  composes: card;
+  gap: 10px;
+}
+
+.reasonChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.reasonChip {
+  padding: 6px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.reasonChipActive {
+  composes: reasonChip;
+  border-color: transparent;
+  background: var(--primary-deep);
+  color: #fff;
+}
+
+.reasonNote {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-subtle);
+}
+
+/* 알림 미리보기 */
+.notifyCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--primary-soft);
+}
+
+.notifyLabel {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--primary);
+}
+
+.notify {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.notifyIcon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+}
+
+.notifyText {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text-strong);
+}
+
+/* ── 하단 고정 ──────────────────────────────────────── */
+.bottomBar {
+  flex-shrink: 0;
+  padding: 8px 20px 28px;
+  background: var(--page-bg);
+}
+
+.saveButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 13px 0;
+  border-radius: 12px;
+  background: var(--primary-deep);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #fff;
+}

@@ -1,0 +1,103 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 12px 16px 32px;
+}
+
+/* 브랜드 영역 */
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: var(--radius-card);
+  background: linear-gradient(147.39deg, #f3efff 0%, #ebe5ff 71.429%);
+}
+
+.logo {
+  width: 42px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.eyebrow {
+  font-size: 13px;
+  color: var(--primary);
+}
+
+.title {
+  font-size: 28px;
+  color: var(--text-strong);
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.demoChips {
+  display: flex;
+  gap: 6px;
+}
+
+/* 가족 그룹 */
+.family {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.familyTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.familyName {
+  font-size: 16px;
+  color: var(--text-strong);
+}
+
+/* 하단 안내 */
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.demoDate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-box);
+  background: var(--card-bg);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.calendarIcon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--primary);
+  opacity: 0.8;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--text-subtle);
+}

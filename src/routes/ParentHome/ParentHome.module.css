@@ -1,0 +1,427 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 20px 20px;
+  background: var(--app-bg);
+}
+
+/* ── 정산 기간 요약 ─────────────────────────────────── */
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 16px;
+  border-radius: var(--radius-card);
+  background: linear-gradient(145deg, #f3efff 0%, #ebe5ff 100%);
+}
+
+.summaryTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.summaryLabel {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--primary);
+}
+
+.dueChip {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16.5px;
+  color: var(--primary);
+}
+
+.amountCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 24px 16px 16px;
+  border-radius: 16px;
+  background: #fff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.05));
+}
+
+.amountLabel {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16.5px;
+  color: var(--text-subtle);
+}
+
+.amount {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 32px;
+  letter-spacing: -0.6px;
+  color: var(--text-strong);
+}
+
+.transfer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--primary);
+}
+
+.transferDot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+}
+
+.summaryNote {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16.5px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* ── 결정할 것 ──────────────────────────────────────── */
+.decisions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-strong);
+}
+
+.countBubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  font-size: 11px;
+  line-height: 16.5px;
+  color: #fff;
+}
+
+.decisionList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-radius: var(--radius-card);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.cardAi {
+  composes: card;
+  gap: 4px;
+  padding: 17px;
+  border: 1px solid rgba(91, 63, 224, 0.1);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tag {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-soft);
+  font-size: 11px;
+  line-height: 16.5px;
+  color: var(--primary);
+}
+
+.tagBlue {
+  composes: tag;
+  background: #e8f1ff;
+  color: #2b6cb0;
+}
+
+.tagGreen {
+  composes: tag;
+  background: #e8f7ee;
+  color: #108a4a;
+}
+
+.cardMeta {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16.5px;
+  color: var(--text-subtle);
+}
+
+.cardTitle {
+  padding-top: 3px;
+  font-size: 14px;
+  line-height: 19.25px;
+  color: var(--text-strong);
+}
+
+.cardTitle em {
+  font-style: normal;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.cardDesc {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--text-muted);
+}
+
+.link {
+  padding: 2px 0 11px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16.5px;
+  text-align: left;
+  color: var(--primary);
+}
+
+.quote {
+  padding: 13.5px 13px 12.63px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: #f8f8fc;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 21.13px;
+  color: var(--text-strong);
+}
+
+.quoteNote {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16.5px;
+  color: var(--text-subtle);
+}
+
+.missionTitle {
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--text-strong);
+}
+
+/* 액션 버튼 쌍 */
+.actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.actionsDivided {
+  composes: actions;
+  padding-top: 13px;
+  border-top: 1px solid var(--card-border);
+}
+
+.primaryButton {
+  flex: 1;
+  padding: 10px 8px;
+  border-radius: 12px;
+  background: var(--primary-deep);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  color: #fff;
+}
+
+.secondaryButton {
+  flex: 1;
+  padding: 10px 8px;
+  border-radius: 12px;
+  background: var(--neutral-soft);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--text-muted);
+}
+
+/* ── 월 브리핑 ──────────────────────────────────────── */
+.briefing {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--radius-card);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.briefingHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.newChip {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-soft);
+  font-size: 10px;
+  line-height: 15px;
+  color: var(--primary);
+}
+
+.briefingLink {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--primary);
+}
+
+.briefingRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.briefingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 9px;
+  border-top: 1px solid var(--card-border);
+}
+
+.briefingRowFirst {
+  composes: briefingRow;
+  padding-top: 4px;
+  border-top: none;
+}
+
+.rowLabel {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--text-subtle);
+}
+
+.rowValue {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: right;
+  color: var(--text-strong);
+}
+
+.rowValueAccent {
+  composes: rowValue;
+  color: var(--primary);
+}
+
+.rowValue em {
+  font-style: normal;
+  font-weight: 600;
+  color: #108a4a;
+}
+
+/* ── 진행 상황 칩 ───────────────────────────────────── */
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progressLabel {
+  padding: 0 4px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-subtle);
+}
+
+.progressChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.progressChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 1px solid rgba(229, 231, 235, 0.7);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--text-strong);
+}
+
+.progressDot {
+  color: var(--primary);
+}
+
+/* 결정할 것을 모두 처리했을 때 — 화면2와 같은 빈 상태 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 33px 25px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.emptyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-soft);
+}
+
+.emptyTitle {
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--text-strong);
+}
+
+.emptyDesc {
+  padding-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: center;
+  color: var(--text-subtle);
+}

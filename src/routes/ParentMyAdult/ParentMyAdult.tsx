@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import loopyMom from '../../assets/avatars/loopy-mom.png'
+import pororoMom from '../../assets/avatars/pororo-mom.png'
 import { BottomNav } from '../../components/BottomNav/BottomNav'
 import type { NavTab } from '../../components/BottomNav/BottomNav'
 import {
@@ -31,17 +31,17 @@ export function ParentMyAdult() {
         <div className={styles.headerRow}>
           <h1 className={styles.headerTitle}>마이페이지</h1>
           <button type="button" className={styles.childChip}>
-            루피
+            뽀로로
           </button>
         </div>
 
         <section className={styles.card}>
           <div className={styles.profileRow}>
-            <img className={styles.avatar} src={loopyMom} alt="" />
+            <img className={styles.avatar} src={pororoMom} alt="" />
             <div>
-              <p className={styles.profileName}>루피 엄마</p>
+              <p className={styles.profileName}>뽀로로 엄마</p>
               <p className={styles.profileMeta}>
-                루피 보호자 · 가족카드 본인회원
+                뽀로로 보호자 · 가족카드 본인회원
               </p>
             </div>
           </div>

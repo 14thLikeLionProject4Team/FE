@@ -1,11 +1,12 @@
-import pororo from '../assets/avatars/pororo.png'
-import pororoMom from '../assets/avatars/pororo-mom.png'
 import loopy from '../assets/avatars/loopy.png'
 import loopyMom from '../assets/avatars/loopy-mom.png'
+import pororo from '../assets/avatars/pororo.png'
+import pororoMom from '../assets/avatars/pororo-mom.png'
 
 export type AccountRole = 'child' | 'parent'
 
 export type Account = {
+  /** 백엔드 페르소나 ID (X-Persona-Id 헤더로 전송) */
   id: string
   name: string
   avatar: string
@@ -34,9 +35,9 @@ export const families: Family[] = [
     note: '18세 → 19세로 넘어가는 중',
     members: [
       {
-        id: 'pororo',
-        name: '뽀로로',
-        avatar: pororo,
+        id: '2',
+        name: '루피',
+        avatar: loopy,
         badge: '자녀',
         caption: '만 18세 · 2007년 11월생',
         status: '결제일 D-6 · 확인서 발급까지 D-14',
@@ -44,11 +45,11 @@ export const families: Family[] = [
         role: 'child',
       },
       {
-        id: 'pororo-mom',
-        name: '뽀로로 엄마',
-        avatar: pororoMom,
+        id: '1',
+        name: '루피 엄마',
+        avatar: loopyMom,
         badge: '부모',
-        caption: '뽀로로 보호자 · 가족카드 본인회원',
+        caption: '루피 보호자 · 가족카드 본인회원',
         status: '확인 기다리는 미션 1',
         statusHighlighted: false,
         role: 'parent',
@@ -61,9 +62,9 @@ export const families: Family[] = [
     note: '막 만 19세가 됨',
     members: [
       {
-        id: 'loopy',
-        name: '루피',
-        avatar: loopy,
+        id: '4',
+        name: '뽀로로',
+        avatar: pororo,
         badge: '본인',
         caption: '만 19세 · 10월 3일 성년 전환',
         status: '확인서 발급 가능',
@@ -71,11 +72,11 @@ export const families: Family[] = [
         role: 'child',
       },
       {
-        id: 'loopy-mom',
-        name: '루피 엄마',
-        avatar: loopyMom,
+        id: '3',
+        name: '뽀로로 엄마',
+        avatar: pororoMom,
         badge: '부모',
-        caption: '바다 보호자 · 가족카드 본인회원',
+        caption: '뽀로로 보호자 · 가족카드 본인회원',
         status: '기록이 본인에게 넘어감',
         statusHighlighted: false,
         role: 'parent',

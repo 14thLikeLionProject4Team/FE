@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import loopy from '../../assets/avatars/loopy.png'
+import pororo from '../../assets/avatars/pororo.png'
 import { BottomNav } from '../../components/BottomNav/BottomNav'
 import type { NavTab } from '../../components/BottomNav/BottomNav'
 import {
@@ -34,8 +34,8 @@ export function AdultMy() {
         </div>
 
         <ProfileCard
-          avatar={loopy}
-          name="루피"
+          avatar={pororo}
+          name="뽀로로"
           meta="2007년 10월생 · 만 19세"
           chip="가족카드 연결됨"
         />

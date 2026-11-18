@@ -7,11 +7,20 @@ const client = axios.create({
   timeout: 60000, // 무료 서버는 첫 요청(콜드 스타트)이 느릴 수 있어 넉넉하게
 });
 
-// 로그인 토큰을 쓰는 경우 자동으로 헤더에 붙여요.
-// 토큰 저장 방식이 다르면 이 부분만 바꾸면 돼요.
+// 현재 보고 있는 계정(페르소나) ID를 모든 요청에 X-Persona-Id 헤더로 붙여요.
+// 주소가 /child/2/... 또는 /parent/1/... 이면 그 숫자를 쓰고,
+// 아니면 마지막으로 저장한 ID를 써요. (ID 목록: GET /personas)
+const getPersonaId = () => {
+  const match = window.location.pathname.match(/^\/(?:child|parent)\/(\d+)/);
+  if (match) return match[1];
+  return localStorage.getItem("personaId");
+};
+
+export const setPersonaId = (id) => localStorage.setItem("personaId", String(id));
+
 client.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  const personaId = getPersonaId();
+  if (personaId) config.headers["X-Persona-Id"] = personaId;
   return config;
 });
 
@@ -25,6 +34,8 @@ client.interceptors.response.use(
 );
 
 export default client;
+
+// "/uploads/파일명" → "https://백엔드주소/uploads/파일명"
 export const toImageUrl = (path) => {
   if (!path) return "";
   if (path.startsWith("http")) return path; // 이미 전체 주소면 그대로

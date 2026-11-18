@@ -13,8 +13,8 @@ import { ParentMyAdult } from './ParentMyAdult/ParentMyAdult'
  * 라우트를 `:accountId` 파라미터로 유지해야 하위 탭 이동이 동작하므로,
  * 분기는 경로가 아니라 여기서 한다.
  */
-const ADULT_CHILD = 'loopy'
-const ADULT_PARENT = 'loopy-mom'
+const ADULT_CHILD = '4' // 뽀로로 (만 19세)
+const ADULT_PARENT = '3' // 뽀로로 엄마
 
 export function ChildHomeRoute() {
   const { accountId } = useParams()

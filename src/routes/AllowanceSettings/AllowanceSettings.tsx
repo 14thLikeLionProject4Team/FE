@@ -30,7 +30,7 @@ export function AllowanceSettings() {
           >
             ‹
           </button>
-          <h1 className={styles.title}>뽀로로 용돈 정하기</h1>
+          <h1 className={styles.title}>루피 용돈 정하기</h1>
         </div>
       }
       footer={

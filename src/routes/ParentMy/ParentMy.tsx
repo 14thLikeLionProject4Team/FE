@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import pororoMom from '../../assets/avatars/pororo-mom.png'
+import loopyMom from '../../assets/avatars/loopy-mom.png'
 import dotViolet from '../../assets/dot-violet.svg'
 import timelineDot from '../../assets/icons/timeline-dot.svg'
 import timelineDotActive from '../../assets/icons/timeline-dot-active.svg'
@@ -37,18 +37,18 @@ export function ParentMy() {
         <div className={styles.headerRow}>
           <h1 className={styles.headerTitle}>마이페이지</h1>
           <button type="button" className={styles.childChip}>
-            뽀로로
+            루피
           </button>
         </div>
 
         {/* 프로필 */}
         <section className={styles.card}>
           <div className={styles.profileRow}>
-            <img className={styles.avatar} src={pororoMom} alt="" />
+            <img className={styles.avatar} src={loopyMom} alt="" />
             <div>
-              <p className={styles.profileName}>뽀로로 엄마</p>
+              <p className={styles.profileName}>루피 엄마</p>
               <p className={styles.profileMeta}>
-                뽀로로 보호자 · 가족카드 본인회원
+                루피 보호자 · 가족카드 본인회원
               </p>
             </div>
           </div>

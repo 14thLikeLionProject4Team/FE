@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import pororo from '../../assets/avatars/pororo.png'
+import loopy from '../../assets/avatars/loopy.png'
 import { BottomNav } from '../../components/BottomNav/BottomNav'
 import type { NavTab } from '../../components/BottomNav/BottomNav'
 import {
@@ -32,8 +32,8 @@ export function ChildMy() {
         <h1 className={styles.pageTitle}>마이페이지</h1>
 
         <ProfileCard
-          avatar={pororo}
-          name="뽀로로"
+          avatar={loopy}
+          name="루피"
           meta="2007년 11월생 · 만 18세"
           chip="가족카드 연결됨"
         />

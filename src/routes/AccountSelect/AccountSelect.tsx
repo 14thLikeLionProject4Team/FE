@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { setPersonaId } from '../../api/client'
 import logo from '../../assets/logo.png'
 import { Chip } from '../../components/Chip/Chip'
 import { PersonCard } from '../../components/PersonCard/PersonCard'
@@ -11,6 +12,7 @@ export function AccountSelect() {
   const navigate = useNavigate()
 
   const handleSelect = (account: Account) => {
+    setPersonaId(account.id) // 이후 API 요청에 X-Persona-Id 로 붙어요
     navigate(`/${account.role}/${account.id}`)
   }
 

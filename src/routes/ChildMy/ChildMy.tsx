@@ -19,7 +19,7 @@ import { findAccount } from '../../data/accounts'
 export function ChildMy() {
   const navigate = useNavigate()
   const { accountId } = useParams()
-  const { data, loading, error, reload, issue } = useChildMyData(accountId)
+  const { data, loading, error, reload, issue, openPdf, busy } = useChildMyData(accountId)
 
   const handleNavigate = (tab: NavTab) => {
     navigate(tab === 'home' ? `/child/${accountId}` : `/child/${accountId}/${tab}`)
@@ -82,9 +82,17 @@ export function ChildMy() {
             />
           </div>
 
-          {v.canIssue ? (
-            <button type="button" className={styles.primaryButton} onClick={issue}>
-              {v.issued ? '확인서 다시 발급하기' : '확인서 발급하기'}
+          {v.issued && v.certificateId ? (
+            <button
+              type="button"
+              className={styles.primaryButton}
+              onClick={() => openPdf(v.certificateId as number)}
+            >
+              확인서 보기 (PDF)
+            </button>
+          ) : v.canIssue ? (
+            <button type="button" className={styles.primaryButton} disabled={busy} onClick={issue}>
+              {busy ? '발급하는 중...' : '확인서 발급하기'}
             </button>
           ) : (
             <button type="button" className={styles.disabledButton} disabled>
@@ -92,13 +100,23 @@ export function ChildMy() {
             </button>
           )}
 
-          <button type="button" className={styles.link}>
-            {'확인서 미리보기  ›'}
-          </button>
+          {v.issued ? (
+            <p className={styles.cardHint}>{v.issuedInfo}</p>
+          ) : (
+            <button
+              type="button"
+              className={styles.link}
+              onClick={() =>
+                document.getElementById('certificate-records')?.scrollIntoView({ behavior: 'smooth' })
+              }
+            >
+              {'확인서 미리보기  ›'}
+            </button>
+          )}
         </section>
 
         {/* 확인서에 들어갈 기록 */}
-        <section className={styles.card}>
+        <section id="certificate-records" className={styles.card}>
           <h2 className={styles.cardTitle}>확인서에 들어갈 내 기록</h2>
           <p className={styles.cardHint}>점수 없이 이 숫자만 그대로 들어가요</p>
 

@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import {
+  downloadCertificate,
   getCertificateEligibility,
   getChildMy,
   getLatestCertificate,
@@ -6,7 +8,8 @@ import {
 } from '../../api/child'
 import { getRecordsSummary, getVisibility } from '../../api/common'
 import { getCurrentSettlement, getSettlements } from '../../api/settlements'
-import { optional, useApi } from '../../api/useApi'
+import { errorMessage, optional, useApi } from '../../api/useApi'
+import { useDemo } from '../../store/useDemo'
 import { birthLabel, monthDay, toDate, yearMonthDot } from '../../utils/format'
 
 /** 자녀 마이 · 본인 마이 화면이 같이 쓰는 데이터 */
@@ -33,12 +36,44 @@ export function useChildMyData(accountId?: string) {
     [accountId],
   )
 
+  const { showToast } = useDemo()
+  const [busy, setBusy] = useState(false)
+
+  /** 확인서 발급 → 목록 다시 불러오기 → 바로 PDF 열기 */
   const issue = async () => {
-    await issueCertificate({ identityVerified: true })
-    await api.reload()
+    if (busy) return
+    setBusy(true)
+    try {
+      const res = await issueCertificate({ identityVerified: true })
+      showToast('확인서를 발급했어요')
+      await api.reload()
+      if (res?.certificateId) await openPdf(res.certificateId)
+    } catch (e) {
+      showToast(errorMessage(e))
+    } finally {
+      setBusy(false)
+    }
   }
 
-  return { ...api, issue }
+  /** 발급한 확인서 PDF 를 새 탭으로 열어요 (팝업이 막히면 파일로 내려받아요) */
+  const openPdf = async (certificateId: number) => {
+    try {
+      const blob: Blob = await downloadCertificate(certificateId)
+      const url = URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }))
+      const win = window.open(url, '_blank')
+      if (!win) {
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `첫단추_금융행동기록확인서_${certificateId}.pdf`
+        a.click()
+      }
+      window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
+    } catch (e) {
+      showToast(errorMessage(e))
+    }
+  }
+
+  return { ...api, issue, openPdf, busy }
 }
 
 type MyData = NonNullable<ReturnType<typeof useChildMyData>['data']>
@@ -71,7 +106,11 @@ export function toMyView(d: MyData) {
     cardChip: my.familyCardLinked ? '가족카드 연결됨' : '가족카드 연결 전',
     adultAt: my.adultTransition?.at as string | null,
     canIssue: el.canIssue as boolean,
-    issued: Boolean(latest),
+    issued: Boolean(latest && !latest.expired),
+    certificateId: (latest?.certificateId as number | undefined) ?? null,
+    issuedInfo: latest
+      ? `${monthDay(latest.issuedAt)} 발급 · ${monthDay(latest.expiresAt)}까지 유효`
+      : '',
     age: {
       done: el.ageReached as boolean,
       note: el.ageReached

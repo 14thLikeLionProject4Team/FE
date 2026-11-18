@@ -25,3 +25,8 @@ client.interceptors.response.use(
 );
 
 export default client;
+export const toImageUrl = (path) => {
+  if (!path) return "";
+  if (path.startsWith("http")) return path; // 이미 전체 주소면 그대로
+  return `${import.meta.env.VITE_API_URL}${path}`;
+};

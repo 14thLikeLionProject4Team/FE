@@ -22,9 +22,20 @@ import styles from './ChildCoach.module.css'
 type Message = {
   messageId: number
   sender: 'CHILD' | 'BOT'
+  /** TEXT: 일반 대화 · RAG: 첫단추 안내 문서를 찾아서 답함 · NUMBER · RETROSPECT */
+  cardType?: 'TEXT' | 'NUMBER' | 'RAG' | 'RETROSPECT'
   content: string
+  payload?: { inScope?: boolean; sources?: { source?: string; title?: string }[] } | null
   createdAt: string
 }
+
+/** RAG 답변이면 어떤 안내 문서를 보고 답했는지 꺼내요 */
+const sourcesOf = (msg: Message) =>
+  msg.cardType === 'RAG'
+    ? (msg.payload?.sources ?? [])
+        .map((s) => [s.source, s.title].filter(Boolean).join(' · '))
+        .filter(Boolean)
+    : []
 
 export function ChildCoach() {
   const navigate = useNavigate()
@@ -244,6 +255,9 @@ export function ChildCoach() {
               <div className={styles.bubbleGroup}>
                 <span className={styles.sender}>단추 코치</span>
                 <p className={styles.coachBubble}>{msg.content}</p>
+                {sourcesOf(msg).length > 0 && (
+                  <span className={styles.time}>📚 참고: {sourcesOf(msg).join(', ')}</span>
+                )}
                 <span className={styles.time}>{timeLabel(msg.createdAt)}</span>
               </div>
             </div>

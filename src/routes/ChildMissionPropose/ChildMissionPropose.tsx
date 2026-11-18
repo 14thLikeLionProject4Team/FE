@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getChildHome } from '../../api/child'
+import { getRewardGuide, proposeMission } from '../../api/missions'
+import { errorMessage, optional, useApi } from '../../api/useApi'
 import { useNavigate, useParams } from 'react-router-dom'
 import cameraSmallIcon from '../../assets/icons/camera-small.svg'
 import checkMarkIcon from '../../assets/icons/check-mark.svg'
@@ -18,43 +21,77 @@ import verifyPhotoIcon from '../../assets/icons/verify-photo.svg'
 import { PhoneShell } from '../../components/PhoneShell/PhoneShell'
 import { SubPageHeader } from '../../components/SubPageHeader/SubPageHeader'
 import { useDemo } from '../../store/useDemo'
+import { addDays, dateInputStyle, num } from '../../utils/format'
 import styles from './ChildMissionPropose.module.css'
 
 const TAGS = ['설거지', '분리수거', '장보기 돕기', '가격 비교', '영수증 정리']
 
 const TYPES = [
-  { id: 'home', label: '집안일 돕기', icon: typeHomeIcon, w: 10.667, h: 12 },
-  { id: 'finance', label: '금융 배우기', icon: typeFinanceIcon, w: 13.333, h: 12.667 },
-  { id: 'habit', label: '습관 만들기', icon: typeHabitIcon, w: 15.067, h: 15.067 },
+  { id: 'CHORE', label: '집안일 돕기', icon: typeHomeIcon, w: 10.667, h: 12 },
+  { id: 'FINANCE', label: '금융 배우기', icon: typeFinanceIcon, w: 13.333, h: 12.667 },
+  { id: 'HABIT', label: '습관 만들기', icon: typeHabitIcon, w: 15.067, h: 15.067 },
 ] as const
 
-const FREQUENCIES = ['한 번', '매주', '매일'] as const
+const FREQUENCIES = [
+  { id: 'ONCE', label: '한 번' },
+  { id: 'WEEKLY', label: '매주' },
+  { id: 'DAILY', label: '매일' },
+] as const
+
 
 export function ChildMissionPropose() {
   const navigate = useNavigate()
   const { accountId } = useParams()
-  const { proposeMission } = useDemo()
-  const [name, setName] = useState('베란다 화분 물 주기')
-  const [criteria, setCriteria] = useState(
-    '일주일에 두 번, 물 준 날 사진으로 인증하기',
-  )
-  const [type, setType] = useState<string>('home')
+  const { showToast } = useDemo()
+  const [name, setName] = useState('')
+  const [criteria, setCriteria] = useState('')
+  const [type, setType] = useState<string>('CHORE')
   const [reward, setReward] = useState(3000)
-  const [frequency, setFrequency] = useState<string>('한 번')
+  const [frequency, setFrequency] = useState<string>('ONCE')
   const [verifyBySelf, setVerifyBySelf] = useState(true)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  // 보상 가이드 · 오늘 날짜(시연 기준일)를 백엔드에서 받아와요
+  const { data } = useApi(
+    () =>
+      Promise.all([optional(getRewardGuide()), optional(getChildHome())]).then(
+        ([guide, home]) => ({ guide, today: (home?.today as string) ?? '' }),
+      ),
+    [accountId],
+  )
+  const guide = data?.guide
+
+  useEffect(() => {
+    if (!data?.today) return
+    setStartDate((v) => v || data.today)
+    setEndDate((v) => v || addDays(data.today, 27))
+  }, [data?.today])
 
   const typeLabel = TYPES.find((t) => t.id === type)?.label ?? ''
 
-  const handleSubmit = () => {
-    if (!name.trim()) return
-    proposeMission({
-      name: name.trim(),
-      type: typeLabel,
-      amount: reward,
-      criteria: criteria.trim(),
-      note: `내가 바라는 보상 ${reward.toLocaleString()}원`,
-    })
-    navigate(`/child/${accountId}/mission`)
+  const handleSubmit = async () => {
+    if (!name.trim() || saving) return
+    setSaving(true)
+    try {
+      await proposeMission({
+        title: name.trim(),
+        criteria: criteria.trim(),
+        missionType: type,
+        desiredReward: reward,
+        startDate,
+        endDate,
+        repeatType: frequency,
+        verifyMethod: verifyBySelf ? 'PHOTO' : 'DIRECT',
+      })
+      showToast('부모님께 제안을 보냈어요')
+      navigate(`/child/${accountId}/mission`)
+    } catch (e) {
+      showToast(errorMessage(e))
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -174,7 +211,7 @@ export function ChildMissionPropose() {
           </div>
 
           <div className={styles.quickAmounts}>
-            {[500, 1000, 3000].map((step) => (
+            {((guide?.quickChips as number[] | undefined) ?? [500, 1000, 3000]).map((step) => (
               <button
                 key={step}
                 type="button"
@@ -186,16 +223,18 @@ export function ChildMissionPropose() {
             ))}
           </div>
 
-          <div className={styles.guideBox}>
-            <span className={styles.guideTitle}>
-              <img src={guideIcon} width="11.25" height="15" alt="" />
-              첫단추 기준 2,100 ~ 5,600원
-            </span>
-            <p className={styles.guideDesc}>
-              용돈 70,000원 × 3~8%, 난이도와 걸리는 시간에 따라. 이번 달 남은
-              한도 18,000원.
-            </p>
-          </div>
+          {guide && (
+            <div className={styles.guideBox}>
+              <span className={styles.guideTitle}>
+                <img src={guideIcon} width="11.25" height="15" alt="" />
+                첫단추 기준 {num(guide.minReward)} ~ {num(guide.maxReward)}원
+              </span>
+              <p className={styles.guideDesc}>
+                용돈 {num(guide.allowanceAmount)}원 × {guide.minRate}~{guide.maxRate}%, 난이도와
+                걸리는 시간에 따라. 이번 달 남은 한도 {num(guide.remainingCap)}원.
+              </p>
+            </div>
+          )}
         </section>
 
         {/* 5. 기간 설정 */}
@@ -205,11 +244,24 @@ export function ChildMissionPropose() {
           <div className={styles.dateRow}>
             <div className={styles.dateBox}>
               <span className={styles.dateLabel}>시작일</span>
-              <span className={styles.dateValue}>10월 19일 (월)</span>
+              <input
+                type="date"
+                className={styles.dateValue}
+                style={dateInputStyle}
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
             </div>
             <div className={styles.dateBox}>
               <span className={styles.dateLabel}>마감일</span>
-              <span className={styles.dateValue}>11월 15일 (일)</span>
+              <input
+                type="date"
+                className={styles.dateValue}
+                style={dateInputStyle}
+                value={endDate}
+                min={startDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
             </div>
           </div>
 
@@ -218,16 +270,16 @@ export function ChildMissionPropose() {
             <div className={styles.frequencyRow}>
               {FREQUENCIES.map((item) => (
                 <button
-                  key={item}
+                  key={item.id}
                   type="button"
                   className={
-                    frequency === item
+                    frequency === item.id
                       ? styles.freqButtonActive
                       : styles.freqButton
                   }
-                  onClick={() => setFrequency(item)}
+                  onClick={() => setFrequency(item.id)}
                 >
-                  {item}
+                  {item.label}
                 </button>
               ))}
             </div>
@@ -323,7 +375,7 @@ export function ChildMissionPropose() {
                   <span className={styles.previewChipNew}>새 제안</span>
                   <span className={styles.previewChipType}>{typeLabel}</span>
                 </div>
-                <h3 className={styles.previewTitle}>{name}</h3>
+                <h3 className={styles.previewTitle}>{name || '미션 이름'}</h3>
               </div>
               <div>
                 <p className={styles.previewRewardLabel}>보상</p>
@@ -359,7 +411,7 @@ export function ChildMissionPropose() {
           <button
             type="button"
             className={styles.ctaButton}
-            disabled={!name.trim()}
+            disabled={!name.trim() || !startDate || !endDate || saving}
             onClick={handleSubmit}
           >
             <img src={sendIcon} width="15.833" height="13.333" alt="" />

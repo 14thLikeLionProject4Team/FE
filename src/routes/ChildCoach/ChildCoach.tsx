@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { getChildHome } from '../../api/child'
+import { getConversationStarter, getMessages, sendMessage } from '../../api/common'
+import { getSavingTip } from '../../api/missions'
+import { errorMessage, optional, useApi } from '../../api/useApi'
 import arrowRightSmIcon from '../../assets/icons/arrow-right-sm.svg'
 import briefingLeafIcon from '../../assets/icons/briefing-leaf.svg'
 import chatAttachIcon from '../../assets/icons/chat-attach.svg'
@@ -7,24 +11,46 @@ import chatSendIcon from '../../assets/icons/chat-send.svg'
 import quickReplyIcon from '../../assets/icons/quick-reply.svg'
 import logoMark from '../../assets/logo-mark.png'
 import { AppHeader } from '../../components/AppHeader/AppHeader'
+import { AsyncState } from '../../components/AsyncState/AsyncState'
 import { BottomNav } from '../../components/BottomNav/BottomNav'
 import type { NavTab } from '../../components/BottomNav/BottomNav'
 import { PhoneShell } from '../../components/PhoneShell/PhoneShell'
 import { useDemo } from '../../store/useDemo'
+import { monthDayW, timeLabel, won } from '../../utils/format'
 import styles from './ChildCoach.module.css'
 
-const QUICK_REPLIES = [
-  { label: '🎯 미션 해서 채울래요!', primary: true },
-  { label: '엄마아빠한테 솔직히 말할게요', primary: false },
-  { label: '절약 팁 알려줘', primary: false },
-]
+type Message = {
+  messageId: number
+  sender: 'CHILD' | 'BOT'
+  content: string
+  createdAt: string
+}
 
 export function ChildCoach() {
   const navigate = useNavigate()
   const { accountId } = useParams()
-  const { messages, sendMessage } = useDemo()
+  const { showToast } = useDemo()
   const [draft, setDraft] = useState('')
+  const [messages, setMessages] = useState<Message[]>([])
+  const [sending, setSending] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+
+  const { data, loading, error, reload } = useApi(
+    () =>
+      Promise.all([
+        getConversationStarter(),
+        optional(getMessages()),
+        optional(getChildHome()),
+        optional(getSavingTip()),
+      ]).then(([starter, history, home, tip]) => ({ starter, history, home, tip })),
+    [accountId],
+  )
+
+  // 지난 대화 기록을 불러오면 화면에 깔아요 (오래된 순서로)
+  useEffect(() => {
+    const list = (data?.history?.messages ?? []) as Message[]
+    setMessages([...list].sort((a, b) => a.messageId - b.messageId))
+  }, [data])
 
   // 새 메시지가 붙으면 아래로 따라 내려간다
   useEffect(() => {
@@ -35,54 +61,85 @@ export function ChildCoach() {
     navigate(tab === 'home' ? `/child/${accountId}` : `/child/${accountId}/${tab}`)
   }
 
-  const handleSend = () => {
-    if (!draft.trim()) return
-    sendMessage(draft)
+  const send = async (text: string) => {
+    const content = text.trim()
+    if (!content || sending) return
     setDraft('')
+    setSending(true)
+    // 내 말은 바로 보여주고, 코치 답은 서버 응답이 오면 붙여요
+    const mine: Message = {
+      messageId: Date.now(),
+      sender: 'CHILD',
+      content,
+      createdAt: new Date().toISOString(),
+    }
+    setMessages((prev) => [...prev, mine])
+    try {
+      const res = await sendMessage({ content })
+      if (res?.reply) setMessages((prev) => [...prev, res.reply as Message])
+      if (res?.childMessage) showToast('부모님께 전할 말로 담아뒀어요')
+    } catch (e) {
+      showToast(errorMessage(e))
+      setMessages((prev) => prev.filter((m) => m !== mine))
+      setDraft(content)
+    } finally {
+      setSending(false)
+    }
   }
 
+  const name: string = data?.home?.member?.name ?? ''
+  const footer = (
+    <>
+      <div className={styles.inputDock}>
+        <div className={styles.inputBar}>
+          <button type="button" className={styles.attachButton} aria-label="첨부">
+            <img src={chatAttachIcon} width="16.667" height="16.667" alt="" />
+          </button>
+          <input
+            className={styles.chatInput}
+            placeholder="단추 코치에게 물어보세요..."
+            value={draft}
+            disabled={sending}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.nativeEvent.isComposing) send(draft)
+            }}
+          />
+          <button
+            type="button"
+            className={styles.sendButton}
+            aria-label="보내기"
+            disabled={sending}
+            onClick={() => send(draft)}
+          >
+            <img src={chatSendIcon} width="13.458" height="11.333" alt="" />
+          </button>
+        </div>
+      </div>
+      <BottomNav active="chat" onNavigate={handleNavigate} />
+    </>
+  )
+  const header = <AppHeader role="자녀" subtitle={name ? `${name}의 지갑` : ''} />
+
+  if (loading || error || !data)
+    return (
+      <PhoneShell header={header} footer={footer}>
+        <AsyncState loading={loading} error={error} onRetry={reload} />
+      </PhoneShell>
+    )
+
+  const { starter, home, tip } = data
+  const st = home?.settlement
+  const shortfall: number = st?.shortfallAmount ?? 0
+  const chips: string[] = starter.chips ?? []
+
   return (
-    <PhoneShell
-      header={<AppHeader role="자녀" subtitle="하늘의 지갑" />}
-      footer={
-        <>
-          <div className={styles.inputDock}>
-            <div className={styles.inputBar}>
-              <button
-                type="button"
-                className={styles.attachButton}
-                aria-label="첨부"
-              >
-                <img src={chatAttachIcon} width="16.667" height="16.667" alt="" />
-              </button>
-              <input
-                className={styles.chatInput}
-                placeholder="단추 코치에게 물어보세요..."
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSend()
-                }}
-              />
-              <button
-                type="button"
-                className={styles.sendButton}
-                aria-label="보내기"
-                onClick={handleSend}
-              >
-                <img src={chatSendIcon} width="13.458" height="11.333" alt="" />
-              </button>
-            </div>
-          </div>
-          <BottomNav active="chat" onNavigate={handleNavigate} />
-        </>
-      }
-    >
+    <PhoneShell header={header} footer={footer}>
       <div className={styles.content}>
         <div className={styles.dateDivider}>
           <span className={styles.datePill}>
             <span className={styles.datePillDot} />
-            10월 20일 (화) · AI 금융 코치 단추
+            {home?.today ? `${monthDayW(home.today)} · ` : ''}AI 금융 코치 단추
           </span>
         </div>
 
@@ -94,135 +151,139 @@ export function ChildCoach() {
           <div className={styles.bubbleGroup}>
             <span className={styles.sender}>단추 코치</span>
             <p className={styles.coachBubble}>
-              하늘아 안녕! 👋 이번 달 결제일까지{' '}
-              <span className={styles.accent}>5일</span> 남았어. 현재 사용액은{' '}
-              <span className={styles.strong}>79,500</span>원이고 계좌 잔액은{' '}
-              <span className={styles.strong}>72,700</span>원이야. 약{' '}
-              <span className={styles.danger}>6,800</span>원이 모자랄 수 있는데,
-              같이 계획을 세워볼까?
+              {starter.greeting}
+              {st && (
+                <>
+                  {' '}
+                  현재 사용액은 <span className={styles.strong}>{won(st.billedAmount)}</span>이고
+                  이번 달 용돈은 <span className={styles.strong}>{won(st.availableAmount)}</span>
+                  이야.
+                  {shortfall > 0 && (
+                    <>
+                      {' '}
+                      약 <span className={styles.danger}>{won(shortfall)}</span>이 모자랄 수
+                      있는데, 같이 계획을 세워볼까?
+                    </>
+                  )}
+                </>
+              )}
             </p>
-            <span className={styles.time}>오후 3:12</span>
+            <span className={styles.time}>{starter.privacyNotice}</span>
           </div>
         </div>
 
-        {/* 자녀 답변 */}
-        <div className={styles.childRow}>
-          <div className={styles.childGroup}>
-            <p className={styles.childBubble}>
-              이번 주에 친구 생일 선물 사느라 돈을 좀 더 썼어요 ㅠㅠ 어떡하죠?
-            </p>
-            <span className={styles.timeRight}>오후 3:14</span>
-          </div>
-        </div>
+        {/* 부족할 때 해결 방법 */}
+        {shortfall > 0 && (
+          <div className={styles.coachRow}>
+            <div className={styles.avatar}>
+              <img className={styles.avatarImage} src={logoMark} alt="" />
+            </div>
+            <div className={styles.bubbleGroup}>
+              <span className={styles.sender}>단추 코치</span>
 
-        {/* 코치 해결책 */}
-        <div className={styles.coachRow}>
-          <div className={styles.avatar}>
-            <img className={styles.avatarImage} src={logoMark} alt="" />
-          </div>
-          <div className={styles.bubbleGroup}>
-            <span className={styles.sender}>단추 코치</span>
-
-            <div className={styles.solutionBubble}>
-              <p>
-                걱정하지 마! 벌칙은 없고, 해결할 수 있는 방법이{' '}
-                <span className={styles.accent}>2가지</span> 있어:
-              </p>
-
-              <div className={styles.solutionCard}>
-                <div className={styles.solutionHead}>
-                  <h3 className={styles.solutionTitle}>🎯 미션으로 채우기</h3>
-                  <span className={styles.solutionBadge}>+6,800원 보충</span>
-                </div>
-                <p className={styles.solutionDesc}>
-                  보너스 미션 2개를 완료하면 즉시 용돈을 보충해 잔액 부족을
-                  해결할 수 있어!
+              <div className={styles.solutionBubble}>
+                <p>
+                  걱정하지 마! 벌칙은 없고, 해결할 수 있는 방법이{' '}
+                  <span className={styles.accent}>2가지</span> 있어:
                 </p>
-                <button
-                  type="button"
-                  className={styles.solutionButton}
-                  onClick={() => navigate(`/child/${accountId}/mission`)}
-                >
-                  가능한 미션 보기
-                  <img
-                    src={arrowRightSmIcon}
-                    width="10.667"
-                    height="10.667"
-                    alt=""
-                  />
-                </button>
-              </div>
 
-              <div className={styles.solutionCardAlt}>
-                <h3 className={styles.solutionTitle}>
-                  🗓️ 다음 주 용돈 앞당기기 / 절약하기
-                </h3>
-                <p className={styles.solutionDesc}>
-                  하루 1,000원씩 편의점 간식을 조절하거나 남은 5일 동안 지출
-                  목표를 맞춰볼 수 있어.
-                </p>
-              </div>
-
-              <div className={styles.briefingCard}>
-                <img src={briefingLeafIcon} width="12" height="17" alt="" />
-                <div>
-                  <p className={styles.briefingTitle}>💡 부모님 안심 브리핑</p>
-                  <p className={styles.briefingBody}>
-                    부모님께는 개별 결제 내역 대신 <strong>'스스로 해결 중'</strong>{' '}
-                    상태의 긍정적인 성장 리포트로 전달돼요.
+                <div className={styles.solutionCard}>
+                  <div className={styles.solutionHead}>
+                    <h3 className={styles.solutionTitle}>🎯 미션으로 채우기</h3>
+                    <span className={styles.solutionBadge}>+{won(shortfall)} 보충</span>
+                  </div>
+                  <p className={styles.solutionDesc}>
+                    진행 중인 미션을 완료하면 용돈을 보충해 잔액 부족을 해결할 수 있어!
                   </p>
+                  <button
+                    type="button"
+                    className={styles.solutionButton}
+                    onClick={() => navigate(`/child/${accountId}/mission`)}
+                  >
+                    가능한 미션 보기
+                    <img src={arrowRightSmIcon} width="10.667" height="10.667" alt="" />
+                  </button>
+                </div>
+
+                {tip?.text && (
+                  <div className={styles.solutionCardAlt}>
+                    <h3 className={styles.solutionTitle}>🗓️ 아껴 쓰기</h3>
+                    <p className={styles.solutionDesc}>{tip.text}</p>
+                  </div>
+                )}
+
+                <div className={styles.briefingCard}>
+                  <img src={briefingLeafIcon} width="12" height="17" alt="" />
+                  <div>
+                    <p className={styles.briefingTitle}>💡 부모님 안심 브리핑</p>
+                    <p className={styles.briefingBody}>
+                      부모님께는 개별 결제 내역 대신 <strong>'스스로 해결 중'</strong> 상태의
+                      긍정적인 성장 리포트로 전달돼요.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <span className={styles.time}>오후 3:15</span>
           </div>
-        </div>
+        )}
 
         {/* 주고받은 메시지 */}
         {messages.map((msg) =>
-          msg.role === 'child' ? (
-            <div key={msg.id} className={styles.childRow}>
+          msg.sender === 'CHILD' ? (
+            <div key={msg.messageId} className={styles.childRow}>
               <div className={styles.childGroup}>
-                <p className={styles.childBubble}>{msg.text}</p>
-                <span className={styles.timeRight}>{msg.time}</span>
+                <p className={styles.childBubble}>{msg.content}</p>
+                <span className={styles.timeRight}>{timeLabel(msg.createdAt)}</span>
               </div>
             </div>
           ) : (
-            <div key={msg.id} className={styles.coachRow}>
+            <div key={msg.messageId} className={styles.coachRow}>
               <div className={styles.avatar}>
                 <img className={styles.avatarImage} src={logoMark} alt="" />
               </div>
               <div className={styles.bubbleGroup}>
                 <span className={styles.sender}>단추 코치</span>
-                <p className={styles.coachBubble}>{msg.text}</p>
-                <span className={styles.time}>{msg.time}</span>
+                <p className={styles.coachBubble}>{msg.content}</p>
+                <span className={styles.time}>{timeLabel(msg.createdAt)}</span>
               </div>
             </div>
           ),
         )}
 
-        {/* 빠른 답변 */}
-        <div className={styles.quickReplies}>
-          <span className={styles.quickLabel}>
-            <img src={quickReplyIcon} width="12.833" height="12.833" alt="" />
-            빠른 답변 선택
-          </span>
-          <div className={styles.quickScroller}>
-            {QUICK_REPLIES.map((reply) => (
-              <button
-                key={reply.label}
-                type="button"
-                className={
-                  reply.primary ? styles.quickChipPrimary : styles.quickChip
-                }
-                onClick={() => sendMessage(reply.label)}
-              >
-                {reply.label}
-              </button>
-            ))}
+        {sending && (
+          <div className={styles.coachRow}>
+            <div className={styles.avatar}>
+              <img className={styles.avatarImage} src={logoMark} alt="" />
+            </div>
+            <div className={styles.bubbleGroup}>
+              <span className={styles.sender}>단추 코치</span>
+              <p className={styles.coachBubble}>생각하는 중...</p>
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* 빠른 답변 */}
+        {chips.length > 0 && (
+          <div className={styles.quickReplies}>
+            <span className={styles.quickLabel}>
+              <img src={quickReplyIcon} width="12.833" height="12.833" alt="" />
+              빠른 답변 선택
+            </span>
+            <div className={styles.quickScroller}>
+              {chips.map((chip, i) => (
+                <button
+                  key={chip}
+                  type="button"
+                  className={i === 0 ? styles.quickChipPrimary : styles.quickChip}
+                  disabled={sending}
+                  onClick={() => send(chip)}
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div ref={bottomRef} />
       </div>

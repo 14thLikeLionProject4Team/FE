@@ -11,7 +11,7 @@ export const createMission = (body) => client.post("/missions", body);
 export const updateMission = (missionId, body) => client.patch(`/missions/${missionId}`, body);
 export const cancelMission = (missionId) => client.delete(`/missions/${missionId}`);
 export const holdMission = (missionId) => client.patch(`/missions/${missionId}/hold`); // 제안 보류
-export const openMission = (missionId) => client.patch(`/missions/${missionId}/open`); // 제안·추천 미션 오픈
+export const openMission = (missionId, body) => client.patch(`/missions/${missionId}/open`, body); // 제안·추천 미션 오픈 (내용·금액 정해서)
 
 // 제안 (자녀)
 export const proposeMission = (body) => client.post("/missions/proposals", body);

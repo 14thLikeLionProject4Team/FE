@@ -85,5 +85,9 @@ export const families: Family[] = [
   },
 ]
 
+/** 계정 ID(페르소나 ID)로 계정 정보(사진 등)를 찾아요 */
+export const findAccount = (id?: string) =>
+  families.flatMap((f) => f.members).find((m) => m.id === id)
+
 /** 시연 기준일 — 디자인에 고정값으로 표기된 날짜 */
 export const DEMO_DATE_LABEL = '오늘은 2026년 10월 19일 (월)로 보여요'

@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import loopy from '../../assets/avatars/loopy.png'
+import { AsyncState } from '../../components/AsyncState/AsyncState'
 import { BottomNav } from '../../components/BottomNav/BottomNav'
 import type { NavTab } from '../../components/BottomNav/BottomNav'
 import {
@@ -10,39 +11,50 @@ import {
   StatRow,
 } from '../../components/MyPage/MyPageParts'
 import styles from '../../components/MyPage/MyPage.module.css'
+import { toMyView, useChildMyData } from '../../components/MyPage/useChildMyData'
 import { PhoneShell } from '../../components/PhoneShell/PhoneShell'
-
-/** 11 / 12회 — 진행 막대 비율 */
-const PROGRESS_RATIO = 292 / 318
+import { findAccount } from '../../data/accounts'
 
 /** 화면 M1 — 아이 마이 (가족 A · 만 18세 · 발급 전) */
 export function ChildMy() {
   const navigate = useNavigate()
   const { accountId } = useParams()
+  const { data, loading, error, reload, issue } = useChildMyData(accountId)
 
   const handleNavigate = (tab: NavTab) => {
     navigate(tab === 'home' ? `/child/${accountId}` : `/child/${accountId}/${tab}`)
   }
 
+  const footer = <BottomNav active="my" onNavigate={handleNavigate} />
+
+  if (loading || error || !data)
+    return (
+      <PhoneShell footer={footer}>
+        <AsyncState loading={loading} error={error} onRetry={reload} />
+      </PhoneShell>
+    )
+
+  const v = toMyView(data)
+
   return (
-    <PhoneShell
-      footer={<BottomNav active="my" onNavigate={handleNavigate} />}
-    >
+    <PhoneShell footer={footer}>
       <div className={styles.content}>
         <h1 className={styles.pageTitle}>마이페이지</h1>
 
         <ProfileCard
-          avatar={loopy}
-          name="루피"
-          meta="2007년 11월생 · 만 18세"
-          chip="가족카드 연결됨"
+          avatar={findAccount(accountId)?.avatar ?? loopy}
+          name={v.name}
+          meta={v.meta}
+          chip={v.cardChip}
         />
 
-        {/* 확인서 — 발급 전 */}
+        {/* 확인서 */}
         <section className={styles.card}>
           <div className={styles.cardTitleRow}>
             <h2 className={styles.cardTitle}>금융행동 기록 확인서</h2>
-            <span className={styles.grayChip}>발급 전</span>
+            <span className={v.canIssue ? styles.solidChip : styles.grayChip}>
+              {v.issued ? '발급 완료' : v.canIssue ? '발급 가능' : '발급 전'}
+            </span>
           </div>
 
           <p className={styles.cardNote}>
@@ -51,28 +63,34 @@ export function ChildMy() {
           </p>
 
           <Requirement
-            done={false}
+            done={v.age.done}
             title="만 19세"
-            note="11월 2일 생일"
-            value="D-14"
+            note={v.age.note}
+            value={v.age.value}
           />
           <Requirement
-            done={false}
+            done={v.settlement.done}
             title="검증된 결제일 정산 12회"
-            note="이번 결제일(10월 25일)에 12회가 돼요"
-            value="11 / 12"
+            note={v.settlement.note}
+            value={v.settlement.value}
           />
 
           <div className={styles.progressTrack}>
             <div
               className={styles.progressFill}
-              style={{ width: `${PROGRESS_RATIO * 100}%` }}
+              style={{ width: `${v.settlement.ratio * 100}%` }}
             />
           </div>
 
-          <button type="button" className={styles.disabledButton} disabled>
-            11월 2일부터 발급할 수 있어요
-          </button>
+          {v.canIssue ? (
+            <button type="button" className={styles.primaryButton} onClick={issue}>
+              {v.issued ? '확인서 다시 발급하기' : '확인서 발급하기'}
+            </button>
+          ) : (
+            <button type="button" className={styles.disabledButton} disabled>
+              {v.availableFrom || '아직 발급할 수 없어요'}
+            </button>
+          )}
 
           <button type="button" className={styles.link}>
             {'확인서 미리보기  ›'}
@@ -84,18 +102,22 @@ export function ChildMy() {
           <h2 className={styles.cardTitle}>확인서에 들어갈 내 기록</h2>
           <p className={styles.cardHint}>점수 없이 이 숫자만 그대로 들어가요</p>
 
-          <StatRow label="결제일 완납" value="10 / 11개월" />
+          <StatRow label="결제일 완납" value={v.stats.fullPaid} />
           <Divider />
-          <StatRow label="최장 연속 완납" value="6개월" accent />
+          <StatRow label="최장 연속 완납" value={v.stats.maxStreak} accent />
           <Divider />
-          <StatRow label="결제일 여유율" value="평균 7%" />
+          <StatRow label="결제일 여유율" value={v.stats.margin} />
           <Divider />
-          <StatRow label="부족분 스스로 해소" value="0 / 1건" />
+          <StatRow
+            label="부족분 스스로 해소"
+            value={v.stats.selfResolved}
+            accent={v.stats.allResolved}
+          />
         </section>
 
         <ListCard
           rows={[
-            { label: '부모님이 보는 범위', value: '총액만 · 부모님이 정해요' },
+            { label: '부모님이 보는 범위', value: v.visibility },
             { label: '연결된 계좌' },
             { label: '알림 설정' },
             { label: '대화 기록 지우기' },

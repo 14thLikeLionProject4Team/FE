@@ -1,37 +1,102 @@
-import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { createMission, getMissionDetail, getRewardGuide, openMission } from '../../api/missions'
+import { getParentHome } from '../../api/parent'
+import { errorMessage, optional, useApi } from '../../api/useApi'
 import backArrowParent from '../../assets/icons/back-arrow-parent.svg'
 import { PhoneShell } from '../../components/PhoneShell/PhoneShell'
 import { useDemo } from '../../store/useDemo'
+import { addDays, dateInputStyle, num, won } from '../../utils/format'
 import styles from './ParentMissionCreate.module.css'
 
 const TAGS = ['설거지', '분리수거', '장보기 돕기', '가격 비교', '영수증 정리']
-const TYPES = ['집안일 돕기', '금융 배우기', '습관 만들기']
-const FREQUENCIES = ['한 번', '매주', '매일']
+const TYPES = [
+  { id: 'CHORE', label: '집안일 돕기' },
+  { id: 'FINANCE', label: '금융 배우기' },
+  { id: 'HABIT', label: '습관 만들기' },
+]
+const FREQUENCIES = [
+  { id: 'ONCE', label: '한 번' },
+  { id: 'WEEKLY', label: '매주' },
+  { id: 'DAILY', label: '매일' },
+]
 
 export function ParentMissionCreate() {
   const navigate = useNavigate()
   const { accountId } = useParams()
-  const { openMission } = useDemo()
-  const [name, setName] = useState('베란다 화분 물 주기')
-  const [criteria, setCriteria] = useState(
-    '일주일에 두 번, 물 준 날 사진으로 인증하기',
-  )
-  const [type, setType] = useState(TYPES[0])
-  const [reward, setReward] = useState(3000)
-  const [frequency, setFrequency] = useState(FREQUENCIES[0])
-  const [verifyByPhoto, setVerifyByPhoto] = useState(true)
+  const { showToast } = useDemo()
+  // ?from=미션ID 면 자녀 제안·추천 미션을 채워서 열어요
+  const [params] = useSearchParams()
+  const fromId = params.get('from')
 
-  const handleOpen = () => {
-    if (!name.trim()) return
-    openMission({
-      name: name.trim(),
-      type,
-      amount: reward,
+  const [name, setName] = useState('')
+  const [criteria, setCriteria] = useState('')
+  const [type, setType] = useState('CHORE')
+  const [reward, setReward] = useState(3000)
+  const [frequency, setFrequency] = useState('ONCE')
+  const [verifyByPhoto, setVerifyByPhoto] = useState(true)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  const { data } = useApi(
+    () =>
+      Promise.all([
+        optional(getParentHome()),
+        optional(getRewardGuide()),
+        fromId ? optional(getMissionDetail(fromId)) : Promise.resolve(null),
+      ]).then(([home, guide, source]) => ({
+        childName: (home?.childName as string) ?? '',
+        today: (home?.today as string) ?? '',
+        guide,
+        source,
+      })),
+    [accountId, fromId],
+  )
+  const childName = data?.childName ?? ''
+  const guide = data?.guide
+
+  // 처음 한 번: 날짜 기본값, 제안·추천 미션 내용 채우기
+  useEffect(() => {
+    if (!data) return
+    const src = data.source
+    if (data.today) {
+      setStartDate((v) => v || src?.startDate || data.today)
+      setEndDate((v) => v || src?.endDate || addDays(data.today, 27))
+    }
+    if (src) {
+      setName(src.title ?? '')
+      setCriteria(src.criteria ?? '')
+      if (src.missionType) setType(src.missionType)
+      setReward(src.desiredReward ?? src.rewardAmount ?? 3000)
+      if (src.repeatType) setFrequency(src.repeatType)
+      if (src.verifyMethod) setVerifyByPhoto(src.verifyMethod === 'PHOTO')
+    }
+  }, [data])
+
+  const handleOpen = async () => {
+    if (!name.trim() || saving) return
+    setSaving(true)
+    const body = {
+      title: name.trim(),
       criteria: criteria.trim(),
-      note: criteria.trim(),
-    })
-    navigate(`/parent/${accountId}/mission`)
+      missionType: type,
+      rewardAmount: reward,
+      startDate,
+      endDate,
+      repeatType: frequency,
+      verifyMethod: verifyByPhoto ? 'PHOTO' : 'DIRECT',
+    }
+    try {
+      if (fromId) await openMission(fromId, body)
+      else await createMission(body)
+      showToast('미션을 열었어요')
+      navigate(`/parent/${accountId}/mission`)
+    } catch (e) {
+      showToast(errorMessage(e))
+    } finally {
+      setSaving(false)
+    }
   }
 
   return (
@@ -49,7 +114,7 @@ export function ParentMissionCreate() {
             </button>
             <h1 className={styles.pageTitle}>미션 만들기</h1>
           </div>
-          <span className={styles.targetChip}>하늘에게</span>
+          <span className={styles.targetChip}>{childName}에게</span>
         </div>
       }
       footer={
@@ -57,12 +122,12 @@ export function ParentMissionCreate() {
           <button
             type="button"
             className={styles.ctaButton}
-            disabled={!name.trim()}
+            disabled={!name.trim() || !startDate || !endDate || saving}
             onClick={handleOpen}
           >
-            미션 열기
+            {saving ? '여는 중...' : '미션 열기'}
           </button>
-          <p className={styles.ctaNote}>열면 하늘이에게 바로 알림이 가요</p>
+          <p className={styles.ctaNote}>열면 {childName}에게 바로 알림이 가요</p>
         </div>
       }
     >
@@ -73,6 +138,7 @@ export function ParentMissionCreate() {
           <input
             className={styles.input}
             value={name}
+            placeholder="미션 이름을 입력하세요"
             onChange={(e) => setName(e.target.value)}
           />
           <div className={styles.tags}>
@@ -95,6 +161,7 @@ export function ParentMissionCreate() {
           <textarea
             className={styles.textarea}
             value={criteria}
+            placeholder="어떻게 끝내면 되는지 적어주세요"
             onChange={(e) => setCriteria(e.target.value)}
           />
         </section>
@@ -105,12 +172,12 @@ export function ParentMissionCreate() {
           <div className={styles.segmented}>
             {TYPES.map((item) => (
               <button
-                key={item}
+                key={item.id}
                 type="button"
-                className={type === item ? styles.segmentActive : styles.segment}
-                onClick={() => setType(item)}
+                className={type === item.id ? styles.segmentActive : styles.segment}
+                onClick={() => setType(item.id)}
               >
-                {item}
+                {item.label}
               </button>
             ))}
           </div>
@@ -166,13 +233,17 @@ export function ParentMissionCreate() {
             </button>
           </div>
 
-          <div className={styles.guideBox}>
-            <span className={styles.guideTitle}>첫단추 기준 2,100 ~ 5,600원</span>
-            <p className={styles.guideDesc}>
-              용돈 70,000원 × 3~8%, 난이도와 걸리는 시간에 따라. 이번 달 남은
-              한도 18,000원.
-            </p>
-          </div>
+          {guide && (
+            <div className={styles.guideBox}>
+              <span className={styles.guideTitle}>
+                첫단추 기준 {num(guide.minReward)} ~ {won(guide.maxReward)}
+              </span>
+              <p className={styles.guideDesc}>
+                용돈 {won(guide.allowanceAmount)} × {guide.minRate}~{guide.maxRate}%, 난이도와
+                걸리는 시간에 따라. 이번 달 남은 한도 {won(guide.remainingCap)}.
+              </p>
+            </div>
+          )}
         </section>
 
         {/* 기간 */}
@@ -182,25 +253,38 @@ export function ParentMissionCreate() {
           <div className={styles.dateRow}>
             <div className={styles.dateBox}>
               <span className={styles.dateLabel}>시작</span>
-              <span className={styles.dateValue}>10월 19일 (월)</span>
+              <input
+                type="date"
+                className={styles.dateValue}
+                style={dateInputStyle}
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
             </div>
             <div className={styles.dateBox}>
               <span className={styles.dateLabel}>마감</span>
-              <span className={styles.dateValue}>11월 15일 (일)</span>
+              <input
+                type="date"
+                className={styles.dateValue}
+                style={dateInputStyle}
+                value={endDate}
+                min={startDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
             </div>
           </div>
 
           <div className={styles.segmented}>
             {FREQUENCIES.map((item) => (
               <button
-                key={item}
+                key={item.id}
                 type="button"
                 className={
-                  frequency === item ? styles.segmentActive : styles.segment
+                  frequency === item.id ? styles.segmentActive : styles.segment
                 }
-                onClick={() => setFrequency(item)}
+                onClick={() => setFrequency(item.id)}
               >
-                {item}
+                {item.label}
               </button>
             ))}
           </div>
@@ -225,7 +309,7 @@ export function ParentMissionCreate() {
                   verifyByPhoto ? styles.radioLabelActive : styles.radioLabel
                 }
               >
-                하늘이가 사진으로 인증
+                {childName}가 사진으로 인증
               </span>
             </button>
 
@@ -252,12 +336,12 @@ export function ParentMissionCreate() {
 
         {/* 미리보기 */}
         <section className={styles.previewWrap}>
-          <span className={styles.previewLabel}>하늘이에게 이렇게 보여요</span>
+          <span className={styles.previewLabel}>{childName}에게 이렇게 보여요</span>
           <div className={styles.previewOuter}>
             <div className={styles.previewCard}>
               <div>
                 <div className={styles.previewTitleRow}>
-                  <span className={styles.previewTitle}>{name}</span>
+                  <span className={styles.previewTitle}>{name || '미션 이름'}</span>
                   <span className={styles.previewBadge}>새 미션</span>
                 </div>
                 <p className={styles.previewDesc}>{criteria}</p>

@@ -31,7 +31,13 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  /* 스크롤은 되지만 막대는 보이지 않게 — 앱처럼 보이도록 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.body::-webkit-scrollbar {
+  display: none;
 }
 
 /* 폰 폭보다 좁은 화면에서는 전체 화면으로 */
